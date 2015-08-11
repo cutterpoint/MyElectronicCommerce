@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+	
+<struts>
+	<include file="struts-default.xml" />
+	<constant name="struts.ObjectFactory" value="spring" /> <!--	表示这里面的action由spring进行创建 -->
+	<constant name="struts.devMode" value="true" />
+	<!--解决乱码    -->
+    <constant name="struts.i18n.encoding" value="UTF-8" />
+    
+	<package name="control" namespace="/control" extends="struts-default">
+		<global-results>
+			<result name="message">/page/share/message.jsp</result>
+		</global-results>
+		<action name="center-*"><!-- 直接跳转，不需要经过class的验证，默认返回success -->
+			<result name="success">/page/controlcenter/{1}.jsp</result>
+		</action>
+		<!-- 产品类别展示 -->
+		<action name="producttypelist" class="productTypeAction" method="execute">
+			<result name="list">/page/product/producttypelist.jsp</result>
+		</action>
+		<!-- 产品类别管理 -->
+		<action name="*-producttypemanage" class="productTypeManageAction" method="{1}UI">
+			<result name="{1}">/page/product/{1}_productType.jsp</result>
+		</action>
+		<action name="producttypemanage-*" class="productTypeManageAction" method="{1}">
+			<result name="{1}">/page/product/{1}_productType.jsp</result>
+		</action>
+		<!-- 品牌类别展示 -->
+		<action name="brandlist" class="brandAction" method="execute">
+			<result name="list">/page/product/brandlist.jsp</result>
+		</action>
+		<!-- 品牌类别管理 -->
+		<action name="*-brandmanage" class="brandManageAction" method="{1}UI">
+			<result name="{1}">/page/product/{1}_brand.jsp</result>
+		</action>
+		<action name="brandmanage-*" class="brandManageAction" method="{1}">
+			<result name="{1}">/page/product/{1}_brand.jsp</result>
+		</action>
+		<!-- 文件展示 -->
+		<action name="uploadfilelist" class="uploadFileAction" method="execute">
+			<result name="list">/page/uploadfile/uploadfilelist.jsp</result>
+		</action>
+		<!-- 文件上传管理 -->
+		<action name="*-filemanage" class="uploadfileManageAction" method="{1}">
+			<result name="{1}">/page/uploadfile/{1}.jsp</result>
+			<result name="fileuploadfinish">/page/uploadfile/fileuploadfinish.jsp</result>
+			<result name="error">/page/uploadfile/error.jsp</result>
+		</action>
+		<!-- 产品分页展示 -->
+		<action name="productlist" class="productAction" method="execute">
+			<result name="list">/page/product/productlist.jsp</result>
+		</action>
+		<!-- 产品管理 -->
+		<action name="*-productmanage" class="productManageAction" method="{1}UI">
+			<result name="{1}">/page/product/{1}_product.jsp</result>
+			<result name="type{1}">/page/product/productTypeSelect.jsp</result>
+		</action>
+		<action name="productmanage-*" class="productManageAction" method="{1}">
+			<result name="{1}">/page/product/{1}_product.jsp</result>
+		</action>
+		<!-- 产品样式分页展示 -->
+		<action name="productstylelist" class="productStyleAction" method="execute">
+			<result name="list">/page/product/productstylelist.jsp</result>
+		</action>
+		<!-- 产品样式管理 -->
+		<action name="*-productstylemanage" class="productStyleManageAction" method="{1}UI">
+			<result name="{1}">/page/product/{1}_productstyle.jsp</result>
+		</action>
+		<action name="productstylemanage-*" class="productStyleManageAction" method="{1}">
+			<result name="{1}">/page/product/{1}_productstyle.jsp</result>
+		</action>
+		<!-- #####################################hadoop相关######################################## -->
+		<action name="uploadHDFSlist" class="uploadHDFSAction" method="execute">
+			<result name="listhdfs">/page/hadoop/uploadhdfs/uploadhdfsfilelist.jsp</result>
+		</action>
+		<!-- hadoop的文件管理 -->
+		<action name="*-uploadHdfs" class="uploadHDFSManagerAction" method="{1}UI">
+			<result name="{1}">/page/hadoop/uploadhdfs/{1}_uploadHdfs.jsp</result>
+		</action>
+		<action name="uploadHdfs-*" class="uploadHDFSManagerAction" method="{1}">
+			<result name="{1}">/page/hadoop/uploadhdfs/{1}_productstyle.jsp</result>
+			<result name="hdfsfileuploadfinish">/page/hadoop/uploadhdfs/hdfsfileuploadfinish.jsp</result>
+		</action>
+	</package>
+	
+	<!-- #####################################前台显示######################################## -->
+	<package name="front" namespace="/" extends="control">
+		<action name="frontProductlist" class="frontProductAction" method="execute">
+			<result name="list_image">/page/product/frontpage/productlist.jsp</result>
+			<result name="list_imagetext">/page/product/frontpage/productlist_text.jsp</result>
+		</action>
+		<action name="switch-*" class="productSwitchAction" method="{1}">
+			<result name="{1}">/page/product/frontpage/{1}.jsp</result>
+		</action>
+		<!-- 产品的展示 -->
+		<action name="viewproduct" class="viewProductAction" method="execute">
+			<result name="product">/page/product/frontpage/productview.jsp</result>
+		</action>
+		<!-- 购物车 -->
+		<action name="shopping-cart" class="cartAction" method="execute">
+			<result name="cart">/page/shopping/cart.jsp</result>
+		</action>
+		<!-- 购物车管理 -->
+		<action name="cart-*" class="cartManageAction" method="{1}">
+			<result type="redirectAction" name="cart">shopping-cart</result>
+		</action>
+	</package>
+</struts>
